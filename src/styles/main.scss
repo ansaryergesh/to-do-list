@@ -22,16 +22,18 @@ aside {
     background-color: rgba(17, 102, 55, 0.815);
     height: 100vh;
     min-height: 100vh;
-    position: absolute;
-    top:9.5%;
-    z-index: -1;
     padding: 15px;
     border-radius: 40px;
     box-shadow: 0rem 0.5rem 5rem rgba(0, 0, 0, 0.9); 
+    margin-right: 25px;
 }
 
 .head {
     color: darken($primary-color, 40%)
+}
+.head2 {
+    color: lighten($primary-color, 30%);
+    font-size: 40px;
 }
 
 .addBtn {
@@ -43,4 +45,11 @@ aside {
     &:hover {
         background-color: $primary-color;
     }
+}
+
+.tasks {
+    background-color: rgba(27, 18, 18, 0.596);
+    height: 100vh;
+    margin-top: 10px;
+    border-radius: 40px;
 }
