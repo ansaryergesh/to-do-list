@@ -7,6 +7,11 @@ const project = (title, description) => {
         task += 1;
     };
 
+
+    const addProject = () => {
+        
+    }
+
     return {projectTitle, projectDesc, projectTask, addTask,};
 }
 

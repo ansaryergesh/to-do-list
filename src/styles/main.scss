@@ -47,9 +47,23 @@ aside {
     }
 }
 
+form {
+    margin-top: 25px;
+}
+.small {
+    font-size: 14px;
+    border-radius: 15px;
+    background-color: lighten($primary-color, 10%);
+}
+
 .tasks {
     background-color: rgba(27, 18, 18, 0.596);
     height: 100vh;
     margin-top: 10px;
     border-radius: 40px;
+}
+
+
+.none {
+    display: none;
 }
