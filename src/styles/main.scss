@@ -1,8 +1,46 @@
 $primary-color: rgba(0, 116, 217, 0.842);
 body {
-  background-color: rgb(189, 178, 178);
+    background: url(https://a-static.besthdwallpaper.com/zapusk-office-desk-oboi-1680x1050-16911_5.jpg) no-repeat center top fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  
+    font-size: 18px;
+}
+
+a, button {
+    cursor: pointer;
 }
 
 nav {
     background-color: $primary-color;
+    z-index: 999;
+}
+
+aside {
+    background-color: rgba(17, 102, 55, 0.815);
+    height: 100vh;
+    min-height: 100vh;
+    position: absolute;
+    top:9.5%;
+    z-index: -1;
+    padding: 15px;
+    border-radius: 40px;
+    box-shadow: 0rem 0.5rem 5rem rgba(0, 0, 0, 0.9); 
+}
+
+.head {
+    color: darken($primary-color, 40%)
+}
+
+.addBtn {
+    padding: 10px;
+    border: none;
+    border-radius: 25px;
+    background-color: lighten($primary-color, 30%);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.63); 
+    &:hover {
+        background-color: $primary-color;
+    }
 }

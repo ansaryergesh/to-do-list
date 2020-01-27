@@ -1,13 +1,13 @@
 const display = (() => {
     
     const sidebar = document.createElement('aside');
-    sidebar.classList.add('left');
+    sidebar.classList.add('left', 'col','s12');
     const head = document.createElement('h2');
     head.classList.add('head')
     const addBtn = document.createElement('button');
     addBtn.classList.add('addBtn');
-    const row = document.querySelector('.row');
-    row.appendChild(sidebar);
+    const body = document.querySelector('body');
+    body.appendChild(sidebar);
     sidebar.appendChild(head);
     sidebar.appendChild(addBtn);
 
