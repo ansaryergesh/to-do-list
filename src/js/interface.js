@@ -22,17 +22,37 @@ const display = (() => {
     const row = document.querySelector('.row');
     const projectForm = document.createElement('form');
     const deleteList = document.createElement('button');
+    const taskBtn = document.createElement('button');
+    taskBtn.classList.add('taskBtn');
+    taskBtn.innerText ='New Task';
+    const todos = document.createElement('form');
+    todos.classList.add('todos');
+    todos.innerHTML = `<input type="text" class="title" placeholder="title">
+        <input type="text" class="description" placeholder="description">
+        <input type="date" class="due-date" placeholder="due-date" value="Date.now()">
+        <select class="browser-default">
+            <option value="" disabled selected>Priority</option>
+            <option value="1">Low</option>
+            <option value="2">Medium</option>
+            <option value="3">High</option>
+      </select>
+        <input type="submit" class="addBtn smallest" value="Add task">`
     deleteList.classList.add('deleteList');
     deleteList.innerHTML = "Delete List";
     projectForm.classList.add('form1');
     projectForm.style.display = 'none';
+    todos.style.display === 'none';
     row.appendChild(sidebar);
     sidebar.appendChild(head);
     sidebar.appendChild(projectList);
     sidebar.appendChild(addBtn);
     row.appendChild(tasks);
     tasks.appendChild(head2);
+    tasks.appendChild(taskBtn);
+    tasks.appendChild(todos);
+    tasks.appendChild(deleteList);
     sidebar.appendChild(projectForm);
+    tasks.style.display = 'none';
     const side = () => {
         head.innerText =' List of projects: ';
         addBtn.innerText = 'Add new project';
@@ -60,6 +80,20 @@ const display = (() => {
         })
     };
 
+    const newTask = () => {
+        taskBtn.addEventListener('click', () => {
+            if (todos.style.display === 'none') {
+                setTimeout(function () {
+                    taskBtn.innerText = "Close Form";
+                    todos.style.display = 'flex';
+                }, 200);
+            } else  { 
+                taskBtn.innerText = "New Task";
+                todos.style.display = 'none';
+            }
+        })
+    }
+
     const addProject = () => {
         document.querySelector('.small').addEventListener('click', e => {
             e.preventDefault();
@@ -77,7 +111,6 @@ const display = (() => {
 
     const select = () => {
         projectList.addEventListener('click', e => {
-            tasks.appendChild(deleteList);
             if (e.target.tagName.toLowerCase() === 'li') {
                 selectProject = e.target.dataset.projectList;
                 showSave();
@@ -89,8 +122,8 @@ const display = (() => {
         deleteList.addEventListener('click', e => {
             lists = lists.filter(list => list.id !== selectProject)
             selectProject = null;
+            tasks.style.display = 'none';
             showSave();
-
         })
     }
 
@@ -106,6 +139,9 @@ const display = (() => {
             listElement.innerText = list.name;
             if(list.id === selectProject) {
               listElement.classList.add('active');
+              tasks.style.display = 'inherit';
+              deleteList.style.display = 'inherit'
+              todos.style.display = 'none';
             }
             projectList.appendChild(listElement);
         })
@@ -139,6 +175,7 @@ const display = (() => {
       addProject();
       select();
       deleteProject();
+      newTask();
     };
 
     return { render };
