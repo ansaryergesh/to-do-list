@@ -1,8 +1,10 @@
 import { controller } from './controller';
 import { project } from './project';
+import { todo } from './todo';
 
 const display = (() => {
-    let lists = [{id: 1, name: 'name1'}];
+    const storage_project = 'task.lists';
+    let lists = JSON.parse(localStorage.getItem(storage_project)) || [];
     const sidebar = document.createElement('aside');
     sidebar.classList.add('left', 'col', 'm3','s12');
     const head = document.createElement('h2');
@@ -59,23 +61,32 @@ const display = (() => {
             const pr = document.querySelector('.project');
             const prName = pr.value;
             if (prName == null || prName === '') return;
+            projectForm.style.display = 'none';
+            addBtn.innerText = "Add new Project";
             const list = project(prName);
             pr.value = null;
             lists.push(list);
-            show();
-         
+            showSave();
         })
     }
 
     const show = () => {
         clearElement(projectList);
-        lists.forEach(list=> {
+        lists.forEach(list => {
             const listElement = document.createElement('li');
             listElement.dataset.projectList= list.id
             listElement.classList.add('list-name');
             listElement.innerText = list.name;
             projectList.appendChild(listElement);
         })
+    }
+
+    const showSave = () => {
+        show();
+        save()
+    }
+    const save = () => {
+        localStorage.setItem(storage_project,JSON.stringify(lists));
     }
 
     const clearElement = (element) => {
