@@ -42,6 +42,7 @@ aside {
     border-radius: 25px;
     background-color: lighten($primary-color, 30%);
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.63); 
+    cursor: pointer;
     &:hover {
         background-color: $primary-color;
     }
