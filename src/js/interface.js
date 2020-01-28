@@ -4,7 +4,9 @@ import { todo } from './todo';
 
 const display = (() => {
     const storage_project = 'task.lists';
+    const project_select = 'task.selected';
     let lists = JSON.parse(localStorage.getItem(storage_project)) || [];
+    let selectProject = localStorage.getItem(project_select);
     const sidebar = document.createElement('aside');
     sidebar.classList.add('left', 'col', 'm3','s12');
     const head = document.createElement('h2');
@@ -70,6 +72,18 @@ const display = (() => {
         })
     }
 
+    const select = () => {
+        projectList.addEventListener('click', e => {
+            if (e.target.tagName.toLowerCase() === 'li') {
+                selectProject = e.target.dataset.projectList;
+                showSave();
+            }
+        });
+    }
+
+
+
+    // controller 
     const show = () => {
         clearElement(projectList);
         lists.forEach(list => {
@@ -77,6 +91,9 @@ const display = (() => {
             listElement.dataset.projectList= list.id
             listElement.classList.add('list-name');
             listElement.innerText = list.name;
+            if(list.id === selectProject) {
+              listElement.classList.add('active');
+            }
             projectList.appendChild(listElement);
         })
     }
@@ -107,6 +124,7 @@ const display = (() => {
       addButton();
       show();
       addProject();
+      select();
     };
 
     return { render };
