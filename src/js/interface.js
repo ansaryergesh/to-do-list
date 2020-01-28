@@ -21,6 +21,9 @@ const display = (() => {
     tasks.classList.add('tasks', 'col','m8', 's12');
     const row = document.querySelector('.row');
     const projectForm = document.createElement('form');
+    const deleteList = document.createElement('button');
+    deleteList.classList.add('deleteList');
+    deleteList.innerHTML = "Delete List";
     projectForm.classList.add('form1');
     projectForm.style.display = 'none';
     row.appendChild(sidebar);
@@ -74,11 +77,21 @@ const display = (() => {
 
     const select = () => {
         projectList.addEventListener('click', e => {
+            tasks.appendChild(deleteList);
             if (e.target.tagName.toLowerCase() === 'li') {
                 selectProject = e.target.dataset.projectList;
                 showSave();
             }
         });
+    }
+
+    const deleteProject = () => {
+        deleteList.addEventListener('click', e => {
+            lists = lists.filter(list => list.id !== selectProject)
+            selectProject = null;
+            showSave();
+
+        })
     }
 
 
@@ -125,6 +138,7 @@ const display = (() => {
       show();
       addProject();
       select();
+      deleteProject();
     };
 
     return { render };

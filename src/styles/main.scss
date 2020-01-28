@@ -84,3 +84,14 @@ form {
     font-weight: bold;
     text-decoration: underline;
 }
+
+.deleteList {
+    font-size:15px;
+    padding: 5px;
+    background-color: lighten($primary-color, 40%);
+    border:none;
+
+    &:hover {
+        background-color: lighten($primary-color, 35%);
+    }
+}
