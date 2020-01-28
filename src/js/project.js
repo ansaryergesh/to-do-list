@@ -1,5 +1,5 @@
-const project = (name, description,tasks) => {
-  return { id: Date.now().toString(), name: name, description: description tasks: [] }
+const project = (name) => {
+  return { id: Date.now().toString(), name: name, tasks: [] }
 }
 
 export {project};
