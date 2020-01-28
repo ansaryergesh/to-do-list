@@ -56,8 +56,6 @@ const display = (() => {
     const side = () => {
         head.innerText =' List of projects: ';
         addBtn.innerText = 'Add new project';
-        head2.innerText = 'Tasks:';
-
         projectForm.innerHTML = `
         <input type="text" class="project" placeholder="Project name">
         <br><br>
@@ -129,8 +127,9 @@ const display = (() => {
 
 
 
-    // controller 
+    // controller project
     const show = () => {
+        const selectedList = lists.find(list => list.id === projectList)
         clearElement(projectList);
         lists.forEach(list => {
             const listElement = document.createElement('li');
@@ -140,11 +139,18 @@ const display = (() => {
             if(list.id === selectProject) {
               listElement.classList.add('active');
               tasks.style.display = 'inherit';
+              head2.innerText = list.name; 
               deleteList.style.display = 'inherit'
               todos.style.display = 'none';
             }
             projectList.appendChild(listElement);
         })
+
+        showTasks(selectedList);
+    }
+
+    const showTasks = (list) => {
+        list.tasks.forEach(task =>)
     }
 
     const showSave = () => {
