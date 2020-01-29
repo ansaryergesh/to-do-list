@@ -11,6 +11,11 @@ const display = (() => {
     sidebar.classList.add('left', 'col', 'm3','s12');
     const head = document.createElement('h2');
     const projectList = document.createElement('ul');
+    const template = document.querySelector('.template');
+    const titleTask = document.querySelector('.title');
+    const descTask = document.querySelector('.description')
+    const dateTask = document.querySelector('.due-date');
+    const priorityTask = document.querySelector('.priority');
     projectList.classList.add('mainList');
     const head2 = document.createElement('h2');
     head.classList.add('head')
@@ -22,15 +27,12 @@ const display = (() => {
     const row = document.querySelector('.row');
     const projectForm = document.createElement('form');
     const deleteList = document.createElement('button');
-    const taskBtn = document.createElement('button');
-    taskBtn.classList.add('taskBtn');
-    taskBtn.innerText ='New Task';
     const todos = document.createElement('form');
     todos.classList.add('todos');
     todos.innerHTML = `<input type="text" class="title" placeholder="title">
         <input type="text" class="description" placeholder="description">
-        <input type="date" class="due-date" placeholder="due-date" value="Date.now()">
-        <select class="browser-default">
+        <input type="date" class="due-date" placeholder="due-date">
+        <select class="browser-default priority">
             <option value="" disabled selected>Priority</option>
             <option value="1">Low</option>
             <option value="2">Medium</option>
@@ -38,17 +40,16 @@ const display = (() => {
       </select>
         <input type="submit" class="addBtn smallest" value="Add task">`
     deleteList.classList.add('deleteList');
-    deleteList.innerHTML = "Delete List";
+    deleteList.innerHTML = "Delete Project";
     projectForm.classList.add('form1');
     projectForm.style.display = 'none';
-    todos.style.display === 'none';
+    todos.style.display === 'flex';
     row.appendChild(sidebar);
     sidebar.appendChild(head);
     sidebar.appendChild(projectList);
     sidebar.appendChild(addBtn);
     row.appendChild(tasks);
     tasks.appendChild(head2);
-    tasks.appendChild(taskBtn);
     tasks.appendChild(todos);
     tasks.appendChild(deleteList);
     sidebar.appendChild(projectForm);
@@ -77,19 +78,6 @@ const display = (() => {
         })
     };
 
-    const newTask = () => {
-        taskBtn.addEventListener('click', () => {
-            if (todos.style.display === 'none') {
-                setTimeout(function () {
-                    taskBtn.innerText = "Close Form";
-                    todos.style.display = 'flex';
-                }, 200);
-            } else  { 
-                taskBtn.innerText = "New Task";
-                todos.style.display = 'none';
-            }
-        })
-    }
 
     const addProject = () => {
         document.querySelector('.small').addEventListener('click', e => {
@@ -102,6 +90,28 @@ const display = (() => {
             const list = project(prName);
             pr.value = null;
             lists.push(list);
+            showSave();
+        })
+    }
+
+    const addTasks = () => {
+        document.querySelector('.smallest').addEventListener('click', e => {
+            e.preventDefault();
+            const taskTitle = titleTask.value;
+            const taskDesc = descTask.value;
+            const taskDate = dateTask.value;
+            const taskPrior = priorityTask.value;
+            if ((taskTitle == null || taskTitle === '') &&
+            (taskDesc == null || taskDesc === '') &&
+            (taskDate == null || taskDate === '') &&
+            (taskPrior !== 'Priority')) return
+            const todoList = todo(taskTitle,taskDesc,taskDate,taskPrior);
+            titleTask.value = null
+            descTask.value = null
+            dateTask.value = null
+            priorityTask.value =null
+            const selectedList = lists.find(list => list.id === selectProject);
+            selectedList.tasks.push(todoList);
             showSave();
         })
     }
@@ -142,6 +152,7 @@ const display = (() => {
 
     }
 
+
     const renderProject = () => {
         lists.forEach(list => {
             const listElement = document.createElement('li');
@@ -150,14 +161,26 @@ const display = (() => {
             listElement.innerText = list.name;
             if(list.id === selectProject) {
               listElement.classList.add('active');
-              todos.style.display = 'none';
             }
             projectList.appendChild(listElement);
         })
     }
 
     const renderTasks = (list) => {
-        // list.tasks.forEach(task =>)
+        list.tasks.forEach(task => {
+            const taskElement = document.importNode(template.content, true);
+            const checkBox = taskElement.querySelector('input');
+            checkBox.id = taks.id;
+            checkBox.checked = task.done;
+            const span = taskElement.querySelector('.name-title');
+            const due = taskElement.querySelector('.date');
+            span.htmlFor = task.id
+            due.htmlFor = task.id
+            span.append(task.title);
+            due.append(task.dueDate);
+            tasks.appendChild(taskElement);
+
+        })
     }
 
     const showSave = () => {
@@ -188,7 +211,7 @@ const display = (() => {
       addProject();
       select();
       deleteProject();
-      newTask();
+      addTasks();
     };
 
     return { render };
