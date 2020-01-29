@@ -52,7 +52,6 @@ const display = (() => {
     tasks.appendChild(todos);
     tasks.appendChild(deleteList);
     sidebar.appendChild(projectForm);
-    tasks.style.display = 'none';
     const side = () => {
         head.innerText =' List of projects: ';
         addBtn.innerText = 'Add new project';
@@ -129,8 +128,21 @@ const display = (() => {
 
     // controller project
     const show = () => {
-        const selectedList = lists.find(list => list.id === projectList)
         clearElement(projectList);
+        renderProject();
+        const selectedList = lists.find(list => list.id === selectProject)
+        if (selectProject == null){
+            tasks.style.display = 'none';
+        }
+        else {
+            tasks.style.display = '';
+            head2.innerText = selectedList.name + " : " + selectedList.tasks.length;
+            renderTasks(selectedList);
+        }
+
+    }
+
+    const renderProject = () => {
         lists.forEach(list => {
             const listElement = document.createElement('li');
             listElement.dataset.projectList= list.id
@@ -138,19 +150,14 @@ const display = (() => {
             listElement.innerText = list.name;
             if(list.id === selectProject) {
               listElement.classList.add('active');
-              tasks.style.display = 'inherit';
-              head2.innerText = list.name; 
-              deleteList.style.display = 'inherit'
               todos.style.display = 'none';
             }
             projectList.appendChild(listElement);
         })
-
-        showTasks(selectedList);
     }
 
-    const showTasks = (list) => {
-        list.tasks.forEach(task =>)
+    const renderTasks = (list) => {
+        // list.tasks.forEach(task =>)
     }
 
     const showSave = () => {
