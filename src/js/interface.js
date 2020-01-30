@@ -12,7 +12,15 @@ const display = (() => {
     const head = document.createElement('h2');
     const projectList = document.createElement('ul');
     const template = document.querySelector('.template');
-  
+    const tableTask = document.createElement('table');
+    tableTask.innerHTML = ` <thead>
+            <tr>
+                <th>Title</th>
+                <th>Due Date</th>
+                <th>Priority</th>
+                <th>Action</th>
+            </tr>
+        </thead>`;
     projectList.classList.add('mainList');
     const head2 = document.createElement('h2');
     head.classList.add('head')
@@ -31,9 +39,9 @@ const display = (() => {
         <input type="date" class="dueDate" placeholder="due-date" data-date>
         <select class="browser-default " id="priority" data-priority>
             <option value="" disabled selected>Priority</option>
-            <option value="1">Low</option>
-            <option value="2">Medium</option>
-            <option value="3">High</option>
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
       </select>
         <input type="submit" class="addBtn smallest" value="Add task">`
     deleteList.classList.add('deleteList');
@@ -49,6 +57,7 @@ const display = (() => {
     tasks.appendChild(head2);
     tasks.appendChild(todos);
     tasks.appendChild(deleteList);
+    tasks.appendChild(tableTask);
     sidebar.appendChild(projectForm);
     const side = () => {
         head.innerText =' List of projects: ';
@@ -173,11 +182,14 @@ const display = (() => {
             checkBox.checked = task.done;
             const span = taskElement.querySelector('.name-title');
             const due = taskElement.querySelector('.date');
+            const prior = taskElement.querySelector('.priorityTd');
             span.htmlFor = task.id
             due.htmlFor = task.id
+            prior.htmlFor = task.id
             span.append(task.title);
             due.append(task.dueDate);
-            tasks.appendChild(taskElement);
+            prior.append(task.priority);
+            tableTask.appendChild(taskElement);
 
         })
     }
