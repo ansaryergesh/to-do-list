@@ -1,6 +1,6 @@
 import { controller } from './controller';
 import { project } from './project';
-import { todo } from './todo';
+import { todolist } from './todo';
 
 const display = (() => {
     const storage_project = 'task.lists';
@@ -12,10 +12,7 @@ const display = (() => {
     const head = document.createElement('h2');
     const projectList = document.createElement('ul');
     const template = document.querySelector('.template');
-    const titleTask = document.querySelector('.title');
-    const descTask = document.querySelector('.description')
-    const dateTask = document.querySelector('.due-date');
-    const priorityTask = document.querySelector('.priority');
+  
     projectList.classList.add('mainList');
     const head2 = document.createElement('h2');
     head.classList.add('head')
@@ -29,10 +26,10 @@ const display = (() => {
     const deleteList = document.createElement('button');
     const todos = document.createElement('form');
     todos.classList.add('todos');
-    todos.innerHTML = `<input type="text" class="title" placeholder="title">
-        <input type="text" class="description" placeholder="description">
-        <input type="date" class="due-date" placeholder="due-date">
-        <select class="browser-default priority">
+    todos.innerHTML = `<input type="text" class="titleName" placeholder="title" data-title>
+        <input type="text" class="description" placeholder="description" data-desc>
+        <input type="date" class="dueDate" placeholder="due-date" data-date>
+        <select class="browser-default " id="priority" data-priority>
             <option value="" disabled selected>Priority</option>
             <option value="1">Low</option>
             <option value="2">Medium</option>
@@ -96,24 +93,26 @@ const display = (() => {
 
     const addTasks = () => {
         document.querySelector('.smallest').addEventListener('click', e => {
+            const titleTask = document.querySelector('[data-title]');
+            const descTask = document.querySelector('[data-desc]')
+            const dateTask = document.querySelector('[data-date]');
+            const priorityTask = document.querySelector('[data-priority]');
             e.preventDefault();
             const taskTitle = titleTask.value;
             const taskDesc = descTask.value;
             const taskDate = dateTask.value;
             const taskPrior = priorityTask.value;
-            if ((taskTitle == null || taskTitle === '') &&
-            (taskDesc == null || taskDesc === '') &&
-            (taskDate == null || taskDate === '') &&
-            (taskPrior !== 'Priority')) return
-            const todoList = todo(taskTitle,taskDesc,taskDate,taskPrior);
-            titleTask.value = null
-            descTask.value = null
-            dateTask.value = null
-            priorityTask.value =null
+            if (taskTitle === '' && taskDesc === '' && taskDate === '' && taskPrior === '') return
+            const todoList = todolist(taskTitle,taskDesc,taskDate,taskPrior);
             const selectedList = lists.find(list => list.id === selectProject);
             selectedList.tasks.push(todoList);
             showSave();
+            clearTaskForm();
         })
+    }
+
+    const clearTaskForm = () => {
+        document.querySelectorAll('input').value = '';
     }
 
     const select = () => {
@@ -170,7 +169,7 @@ const display = (() => {
         list.tasks.forEach(task => {
             const taskElement = document.importNode(template.content, true);
             const checkBox = taskElement.querySelector('input');
-            checkBox.id = taks.id;
+            checkBox.id = task.id;
             checkBox.checked = task.done;
             const span = taskElement.querySelector('.name-title');
             const due = taskElement.querySelector('.date');
