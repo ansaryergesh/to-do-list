@@ -13,6 +13,7 @@ const display = (() => {
     const projectList = document.createElement('ul');
     const template = document.querySelector('.template');
     const tableTask = document.createElement('table');
+    const taskContainer = document.querySelector('data-todo-body');
     tableTask.innerHTML = ` <thead>
             <tr>
                 <th>Title</th>
@@ -111,7 +112,7 @@ const display = (() => {
             const taskDesc = descTask.value;
             const taskDate = dateTask.value;
             const taskPrior = priorityTask.value;
-            if (taskTitle === '' && taskDesc === '' && taskDate === '' && taskPrior === '') return
+            if (taskTitle === '' && taskDesc === '' && taskDate === null && taskPrior === '') return
             const todoList = todolist(taskTitle,taskDesc,taskDate,taskPrior);
             const selectedList = lists.find(list => list.id === selectProject);
             selectedList.tasks.push(todoList);
@@ -142,7 +143,9 @@ const display = (() => {
         })
     }
 
-
+    const checkBoxClick = () => {
+        
+    }
 
     // controller project
     const show = () => {
@@ -156,6 +159,7 @@ const display = (() => {
             tasks.style.display = '';
             head2.innerText = selectedList.name + " : " + selectedList.tasks.length;
             renderTasks(selectedList);
+            // clearElement(taskContainer);
         }
 
     }
@@ -208,12 +212,6 @@ const display = (() => {
         }
     }
 
-
-
-
-    
-    
-    
     
     const render = () => {
       side();
