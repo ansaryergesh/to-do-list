@@ -103,16 +103,16 @@ const display = (() => {
 
     const addTasks = () => {
         document.querySelector('.smallest').addEventListener('click', e => {
-            const titleTask = document.querySelector('[data-title]');
-            const descTask = document.querySelector('[data-desc]')
-            const dateTask = document.querySelector('[data-date]');
-            const priorityTask = document.querySelector('[data-priority]');
+            var titleTask = document.querySelector('[data-title]');
+            var descTask = document.querySelector('[data-desc]')
+            var dateTask = document.querySelector('[data-date]');
+            var priorityTask = document.querySelector('[data-priority]');
             e.preventDefault();
-            const taskTitle = titleTask.value;
-            const taskDesc = descTask.value;
-            const taskDate = dateTask.value;
-            const taskPrior = priorityTask.value;
-            if (taskTitle === '' && taskDesc === '' && taskDate === null && taskPrior === '') return
+            var taskTitle = titleTask.value;
+            var taskDesc = descTask.value;
+            var taskDate = dateTask.value;
+            var taskPrior = priorityTask.value;
+            if (taskTitle === '' || taskDesc === '' || taskDate === null || taskPrior === '') return
             const todoList = todolist(taskTitle,taskDesc,taskDate,taskPrior);
             const selectedList = lists.find(list => list.id === selectProject);
             selectedList.tasks.push(todoList);
@@ -121,8 +121,13 @@ const display = (() => {
         })
     }
 
+    
+
     const clearTaskForm = () => {
-        document.querySelectorAll('input').value = '';
+        document.querySelector('[data-title]').value = '';
+        document.querySelector('[data-desc]').value = ''
+        document.querySelector('[data-date]').value = ''
+        document.querySelector('[data-priority]').value = ''
     }
 
     const select = () => {
@@ -143,11 +148,6 @@ const display = (() => {
         })
     }
 
-    const checkBoxClick = () => {
-        
-    }
-
-    // controller project
     const show = () => {
         clearElement(projectList);
         renderProject();
@@ -158,8 +158,10 @@ const display = (() => {
         else {
             tasks.style.display = '';
             head2.innerText = selectedList.name + " : " + selectedList.tasks.length;
+            clearElement(tableTask);
             renderTasks(selectedList);
-            // clearElement(taskContainer);
+            clearTaskForm();
+            
         }
 
     }
@@ -194,7 +196,6 @@ const display = (() => {
             due.append(task.dueDate);
             prior.append(task.priority);
             tableTask.appendChild(taskElement);
-
         })
     }
 
