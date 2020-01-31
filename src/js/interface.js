@@ -11,17 +11,17 @@ const display = (() => {
     sidebar.classList.add('left', 'col', 'm3','s12');
     const head = document.createElement('h2');
     const projectList = document.createElement('ul');
-    const template = document.querySelector('.template');
-    const tableTask = document.createElement('table');
+    const template = document.querySelector('.tasks');
+    const tableTask = document.createElement('div');
+    const tableContainer = document.createElement('div');
+    tableContainer.classList.add('tskContainer')
     const taskContainer = document.querySelector('data-todo-body');
-    tableTask.innerHTML = ` <thead>
-            <tr>
-                <th>Title</th>
-                <th>Due Date</th>
-                <th>Priority</th>
-                <th>Action</th>
-            </tr>
-        </thead>`;
+    tableContainer.innerHTML = `
+        <ul class="headerList"><li>Title</li>
+        <li>Due date</li>
+        <li>Priority</li>
+        <li>Action1</li>
+        <li>Action2 </li></ul>`
     projectList.classList.add('mainList');
     const head2 = document.createElement('h2');
     head.classList.add('head')
@@ -58,7 +58,8 @@ const display = (() => {
     tasks.appendChild(head2);
     tasks.appendChild(todos);
     tasks.appendChild(deleteList);
-    tasks.appendChild(tableTask);
+    tasks.appendChild(tableContainer);
+    tableContainer.appendChild(tableTask);
     sidebar.appendChild(projectForm);
     const side = () => {
         head.innerText =' List of projects: ';
@@ -161,7 +162,11 @@ const display = (() => {
             clearElement(tableTask);
             renderTasks(selectedList);
             clearTaskForm();
-            
+            if (selectedList.tasks.length === 0) {
+                tableContainer.style.display = 'none';
+            }else {
+                tableContainer.style.display = '';
+            }
         }
 
     }

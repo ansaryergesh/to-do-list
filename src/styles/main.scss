@@ -115,7 +115,25 @@ form {
     
 }
 
-table {
-    color: white;
-    margin-top: 25px;
+.task-body{
+    display: flex;
+    flex-wrap: nowrap;
+    li {
+        margin: 0 35px;
+        text-align: center;
+        width: 100px;
+    }
+}
+.headerList{
+    display: flex;
+    flex-wrap: nowrap;
+    li {
+        margin: 0 35px;
+        text-align: center;
+        width: 100px;
+    }
+}
+.tskContainer {
+    color:white;
+    margin-top: 35px;
 }
