@@ -6,29 +6,29 @@ const display = (() => {
   let lists = JSON.parse(localStorage.getItem('projects')) || [];
   let selectProject;
   const sidebar = document.createElement('aside');
-  sidebar.classList.add('left', 'col', 'm3','s12');
+  sidebar.classList.add('left', 'col', 'm3', 's12');
   const head = document.createElement('h2');
   const projectList = document.createElement('ul');
   const template = document.querySelector('.tasks');
   const tableTask = document.createElement('div');
   const tableContainer = document.createElement('div');
-  const editBtn = document.getElementById('action');
-  tableContainer.classList.add('tskContainer')
-  const taskContainer = document.querySelector('data-todo-body');
+  // const editBtn = document.getElementById('action');
+  tableContainer.classList.add('tskContainer');
+  // const taskContainer = document.querySelector('data-todo-body');
   tableContainer.innerHTML = `
     <ul class="headerList"><li>Title</li>
     <li>Due date</li>
     <li>Priority</li>
     <li>Action1</li>
-    <li>Action2 </li></ul>`
+    <li>Action2 </li></ul>`;
   projectList.classList.add('mainList');
   const head2 = document.createElement('h2');
-  head.classList.add('head')
-  head2.classList.add('head2')
+  head.classList.add('head');
+  head2.classList.add('head2');
   const addBtn = document.createElement('button');
   addBtn.classList.add('addBtn');
   const tasks = document.createElement('section');
-  tasks.classList.add('tasks', 'col','m8', 's12');
+  tasks.classList.add('tasks', 'col', 'm8', 's12');
   const row = document.querySelector('.row');
   const projectForm = document.createElement('form');
   const deleteList = document.createElement('button');
@@ -44,12 +44,12 @@ const display = (() => {
         <option value="High">High</option>
     </select>
     <input type="submit" id="action" class=" addBtn actionEdit none" value="Edit">
-    <input type="submit"  class="addBtn smallest" value="Add">`
+    <input type="submit"  class="addBtn smallest" value="Add">`;
   deleteList.classList.add('deleteList');
-  deleteList.innerHTML = "Delete Project";
+  deleteList.innerHTML = 'Delete Project';
   projectForm.classList.add('form1');
   projectForm.style.display = 'none';
-  todos.style.display === 'flex';
+  // todos.style.display === 'flex';
   row.appendChild(sidebar);
   sidebar.appendChild(head);
   sidebar.appendChild(projectList);
@@ -66,7 +66,7 @@ const display = (() => {
   tableContainer.appendChild(cancelEdit);
   sidebar.appendChild(projectForm);
   const side = () => {
-    head.innerText =' List of projects: ';
+    head.innerText = ' List of projects: ';
     addBtn.innerText = 'Add new project';
     projectForm.innerHTML = `
     <input type="text" class="project" placeholder="Project name">
@@ -76,17 +76,49 @@ const display = (() => {
   };
 
   const addButton = () => {
-    document.querySelector('.addBtn').addEventListener('click', (e) => {
-      if(projectForm.style.display === 'none') {
-        setTimeout(function () {
-          addBtn.innerText = "Cancel";
+    document.querySelector('.addBtn').addEventListener('click', () => {
+      if (projectForm.style.display === 'none') {
+        setTimeout( () => {
+          addBtn.innerText = 'Cancel';
           projectForm.style.display = 'inherit';
         }, 200);
-      } else { 
-          addBtn.innerText = "Add new Project";
-          projectForm.style.display = 'none';
+      } else {
+        addBtn.innerText = 'Add new Project';
+        projectForm.style.display = 'none';
       }
-    })
+    });
+  };
+
+  const show = () => {
+    helpers.clearElement(projectList);
+    renderProject();
+    const selectedProject = lists.find(list => list.id === selectProject)
+    if (selectProject == null){
+      tasks.style.display = 'none';
+    }
+    else {
+      tasks.style.display = '';
+      head2.innerText = selectedProject.name + " : " + selectedProject.tasks.length;
+      helpers.clearElement(tableTask);
+      renderTasks(selectedProject);
+      clearEvents();
+      if (selectedProject.tasks.length === 0) {
+        tableContainer.style.display = 'none';
+        cancelEdit.style.display = 'none';
+      } else {
+          tableContainer.style.display = '';
+          cancelEdit.style.display = '';
+      }
+    }
+  }
+
+  const save = () => {
+    localStorage.setItem('projects',JSON.stringify(lists));
+  }
+
+  const showSave = () => {
+    show();
+    save()
   };
 
   const addProject = () => {
@@ -96,7 +128,7 @@ const display = (() => {
       const prName = pr.value;
       if (prName == null || prName === '') return;
       projectForm.style.display = 'none';
-      addBtn.innerText = "Add new Project";
+      addBtn.innerText = 'Add new Project';
       const list = project(prName);
       pr.value = null;
       lists.push(list);
@@ -168,29 +200,6 @@ const display = (() => {
       tasks.style.display = 'none';
       showSave();
     })
-  }
-
-  const show = () => {
-    helpers.clearElement(projectList);
-    renderProject();
-    const selectedProject = lists.find(list => list.id === selectProject)
-    if (selectProject == null){
-      tasks.style.display = 'none';
-    }
-    else {
-      tasks.style.display = '';
-      head2.innerText = selectedProject.name + " : " + selectedProject.tasks.length;
-      helpers.clearElement(tableTask);
-      renderTasks(selectedProject);
-      clearEvents();
-      if (selectedProject.tasks.length === 0) {
-        tableContainer.style.display = 'none';
-        cancelEdit.style.display = 'none';
-      } else {
-          tableContainer.style.display = '';
-          cancelEdit.style.display = '';
-      }
-    }
   }
 
   const renderProject = () => {
@@ -278,15 +287,6 @@ const display = (() => {
     document.querySelector('[data-desc]').value = description;
     document.querySelector('[data-date]').value = date;
     document.querySelector('[data-priority]').value = priority;
-  }
-
-  const showSave = () => {
-    show();
-    save()
-  }
-
-  const save = () => {
-    localStorage.setItem('projects',JSON.stringify(lists));
   }
 
   const render = () => {
