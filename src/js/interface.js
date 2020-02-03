@@ -86,6 +86,7 @@ const display = (() => {
           addBtn.innerText = "Add new Project";
           projectForm.style.display = 'none';
       }
+
     })
   };
 
@@ -130,25 +131,20 @@ const display = (() => {
       const taskId = btn.dataset.taskAction;
       const selectedProject = lists.find(list => list.id === selectProject);
       const tasks = selectedProject.tasks.find(task => task.id === taskId);
-      // console.log(taskId);
       let titleTask = document.querySelector('[data-title]');
       let descTask = document.querySelector('[data-desc]')
       let dateTask = document.querySelector('[data-date]');
       let priorityTask = document.querySelector('[data-priority]');
       e.preventDefault();
-      if (titleTask.value === '' || descTask.value === '' || dateTask.value === null || priorityTask.value === '') return
+      if (titleTask.value === '' || descTask.value === '' || dateTask.value === '' || priorityTask.value === '') return
       tasks.title = titleTask.value;
       tasks.description = descTask.value;
-      tasks.dateTask = descTask.value;
-      tasks.priorityTask = priorityTask.value;
+      tasks.dueDate = dateTask.value;
+      tasks.priority = priorityTask.value;
       showSave();
-      clearTaskForm();
-      clearAction();
-      
+      clearEvents();
     })
   }
-
-   
 
   const clearTaskForm = () => {
     document.querySelector('[data-title]').value = '';
@@ -187,8 +183,7 @@ const display = (() => {
       head2.innerText = selectedProject.name + " : " + selectedProject.tasks.length;
       clearElement(tableTask);
       renderTasks(selectedProject);
-      clearAction();
-      clearTaskForm();
+      clearEvents();
       if (selectedProject.tasks.length === 0) {
         tableContainer.style.display = 'none';
         cancelEdit.style.display = 'none';
@@ -250,27 +245,33 @@ const display = (() => {
 
       if (e.target.className === 'btn-edit') {
         parent = e.target.parentNode.parentNode;
+        const btn = document.getElementById('action');
         const selectedProject = lists.find(list => list.id === selectProject);
         const tasks = selectedProject.tasks.find(task => task.id === parent.dataset.taskList);
         editTodo(tasks.title,tasks.description,tasks.dueDate,tasks.priority);
-        document.getElementById('action').dataset.taskAction = tasks.id;
+        btn.dataset.taskAction = tasks.id;
         cancelEdit.classList.remove('none');
-        document.getElementById('action').classList.remove('none');
+        btn.classList.remove('none');
         document.querySelector('.smallest').classList.add('none');
       }
     })
   }
 
   cancelEdit.addEventListener('click', e => {
-    clearAction();
-    clearTaskForm();
-    cancelEdit.classList.add('none');
+    clearEvents();
   })
 
   const clearAction = () => {
-    document.getElementById('action').dataset.taskAction = null;
-    document.getElementById('action').classList.add('none');
+    const btn = document.getElementById('action');
+    btn.dataset.taskAction = null;
+    btn.classList.add('none');
     document.querySelector('.smallest').classList.remove('none');
+    cancelEdit.classList.add('none');
+  }
+
+  const clearEvents = () => {
+    clearAction();
+    clearTaskForm();
   }
 
   const deleteTodo = (target) => {
