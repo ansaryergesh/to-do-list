@@ -86,23 +86,29 @@ const display = (() => {
     });
   };
 
-  
   const renderProject = () => {
     lists.forEach(list => {
       const listElement = document.createElement('li');
-      listElement.dataset.projectList= list.id
+      listElement.dataset.projectList = list.id
       listElement.classList.add('list-name');
       listElement.innerText = list.name;
-      if(list.id === selectProject) {
+      if (list.id === selectProject) {
         listElement.classList.add('active');
       }
       projectList.appendChild(listElement);
     });
   };
 
-  
   const save = () => {
-    localStorage.setItem('projects',JSON.stringify(lists));
+    localStorage.setItem('projects', JSON.stringify(lists));
+  };
+
+  
+  const editTodo = (title, description, date, priority) => {
+    document.querySelector('[data-title]').value = title;
+    document.querySelector('[data-desc]').value = description;
+    document.querySelector('[data-date]').value = date;
+    document.querySelector('[data-priority]').value = priority;
   };
 
   const renderTasks = (list) => {
@@ -110,14 +116,14 @@ const display = (() => {
       const taskElement = document.importNode(template.content, true);
       const checkBox = taskElement.querySelector('input');
       const taskBody = taskElement.querySelector('.task-body');
-      taskBody.dataset.taskList= task.id;
+      taskBody.dataset.taskList = task.id;
       checkBox.checked = task.done;
       const span = taskElement.querySelector('.name-title');
       const due = taskElement.querySelector('.date');
       const prior = taskElement.querySelector('.priorityTd');
-      span.htmlFor = task.id
-      due.htmlFor = task.id
-      prior.htmlFor = task.id
+      span.htmlFor = task.id;
+      due.htmlFor = task.id;
+      prior.htmlFor = task.id;
       span.append(task.title);
       due.append(task.dueDate);
       prior.append(task.priority);
@@ -125,28 +131,30 @@ const display = (() => {
     });
 
     tableTask.addEventListener('click', e => {
-      if (e.target.tagName.toLowerCase()  === 'input') {
-        parent = e.target.parentNode.parentNode.parentNode;
+      if (e.target.tagName.toLowerCase() === 'input') {
+        const parent = e.target.parentNode.parentNode.parentNode;
         const selectedProject = lists.find(list => list.id === selectProject);
-        const selectedTask = selectedProject.tasks.find(task => task.id === parent.dataset.taskList);
+        const selectedTask = selectedProject.tasks.find
+        (task => task.id === parent.dataset.taskList);
         selectedTask.done = e.target.checked;
         save();
-      };
+      }
 
-      if (e.target.className === 'btn-delete') { 
-        helpers.deleteTodo(e.target); 
-        parent = e.target.parentNode.parentNode;
+      if (e.target.className === 'btn-delete') {
+        helpers.deleteTodo(e.target);
+        const parent = e.target.parentNode.parentNode;
         const selectedProject = lists.find(list => list.id === selectProject);
-        selectedProject.tasks = selectedProject.tasks.filter(task => task.id !== parent.dataset.taskList)
+        selectedProject.tasks = selectedProject.tasks.filter
+        (task => task.id !== parent.dataset.taskList)
         save();
-      };
+      }
 
       if (e.target.className === 'btn-edit') {
-        parent = e.target.parentNode.parentNode;
+        const parent = e.target.parentNode.parentNode;
         const btn = document.getElementById('action');
         const selectedProject = lists.find(list => list.id === selectProject);
         const tasks = selectedProject.tasks.find(task => task.id === parent.dataset.taskList);
-        editTodo(tasks.title,tasks.description,tasks.dueDate,tasks.priority);
+        editTodo(tasks.title, tasks.description, tasks.dueDate, tasks.priority);
         btn.dataset.taskAction = tasks.id;
         cancelEdit.classList.remove('none');
         btn.classList.remove('none');
@@ -280,13 +288,6 @@ const display = (() => {
   const clearEvents = () => {
     clearAction();
     clearTaskForm();
-  };
-
-  const editTodo = (title, description, date, priority) => {
-    document.querySelector('[data-title]').value = title;
-    document.querySelector('[data-desc]').value = description;
-    document.querySelector('[data-date]').value = date;
-    document.querySelector('[data-priority]').value = priority;
   };
 
   const render = () => {
