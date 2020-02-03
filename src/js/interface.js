@@ -133,8 +133,8 @@ const display = (() => {
       if (e.target.tagName.toLowerCase() === 'input') {
         const parent = e.target.parentNode.parentNode.parentNode;
         const selectedProject = lists.find(list => list.id === selectProject);
-        const selectedTask = selectedProject.tasks.find(task => 
-          task.id === parent.dataset.taskList);
+        const selectedTask = selectedProject.tasks.find(task => task.id
+          === parent.dataset.taskList);
         selectedTask.done = e.target.checked;
         save();
       }
@@ -143,8 +143,8 @@ const display = (() => {
         helpers.deleteTodo(e.target);
         const parent = e.target.parentNode.parentNode;
         const selectedProject = lists.find(list => list.id === selectProject);
-        selectedProject.tasks = selectedProject.tasks.filter(task => 
-          task.id !== parent.dataset.taskList);
+        selectedProject.tasks = selectedProject.tasks.filter(task => task.id
+          !== parent.dataset.taskList);
         save();
       }
 
@@ -162,7 +162,6 @@ const display = (() => {
     });
   };
 
-    
   const clearTaskForm = () => {
     document.querySelector('[data-title]').value = '';
     document.querySelector('[data-desc]').value = '';
@@ -177,7 +176,7 @@ const display = (() => {
     document.querySelector('.smallest').classList.remove('none');
     cancelEdit.classList.add('none');
   };
-  
+
   const clearEvents = () => {
     clearAction();
     clearTaskForm();
@@ -191,18 +190,18 @@ const display = (() => {
     if (selectProject == null) {
       tasks.style.display = 'none';
     } else {
-        tasks.style.display = '';
-        head2.innerText = selectedProject.name + " : " + selectedProject.tasks.length;
-        helpers.clearElement(tableTask);
-        renderTasks(selectedProject);
-        clearEvents();
-        if (selectedProject.tasks.length === 0) {
-          tableContainer.style.display = 'none';
-          cancelEdit.style.display = 'none';
-        } else {
-        tableContainer.style.display = '';
-        cancelEdit.style.display = '';
-        }
+      tasks.style.display = '';
+      head2.innerText = selectedProject.name + " : " + selectedProject.tasks.length;
+      helpers.clearElement(tableTask);
+      renderTasks(selectedProject);
+      clearEvents();
+      if (selectedProject.tasks.length === 0) {
+        tableContainer.style.display = 'none';
+        cancelEdit.style.display = 'none';
+      } else {
+      tableContainer.style.display = '';
+      cancelEdit.style.display = '';
+      }
     }
   };
 
@@ -229,7 +228,7 @@ const display = (() => {
   const addTasks = () => {
     document.querySelector('.smallest').addEventListener('click', e => {
       const titleTask = document.querySelector('[data-title]');
-      const descTask = document.querySelector('[data-desc]')
+      const descTask = document.querySelector('[data-desc]');
       const dateTask = document.querySelector('[data-date]');
       const priorityTask = document.querySelector('[data-priority]');
       e.preventDefault();
@@ -237,8 +236,8 @@ const display = (() => {
       const taskDesc = descTask.value;
       const taskDate = dateTask.value;
       const taskPrior = priorityTask.value;
-      if (taskTitle === '' || taskDesc === '' || taskDate === null || taskPrior === '') return
-      const todoList = todolist(taskTitle,taskDesc,taskDate,taskPrior);
+      if (taskTitle === '' || taskDesc === '' || taskDate === null || taskPrior === '') return;
+      const todoList = todolist(taskTitle, taskDesc, taskDate, taskPrior);
       const selectedProject = lists.find(list => list.id === selectProject);
       selectedProject.tasks.push(todoList);
       showSave();
@@ -253,11 +252,11 @@ const display = (() => {
       const selectedProject = lists.find(list => list.id === selectProject);
       const tasks = selectedProject.tasks.find(task => task.id === taskId);
       const titleTask = document.querySelector('[data-title]');
-      const descTask = document.querySelector('[data-desc]')
+      const descTask = document.querySelector('[data-desc]');
       const dateTask = document.querySelector('[data-date]');
       const priorityTask = document.querySelector('[data-priority]');
       e.preventDefault();
-      if (titleTask.value === '' || descTask.value === '' || dateTask.value === '' || priorityTask.value === '') return
+      if (titleTask.value === '' || descTask.value === '' || dateTask.value === '' || priorityTask.value === '') return;
       tasks.title = titleTask.value;
       tasks.description = descTask.value;
       tasks.dueDate = dateTask.value;
@@ -278,7 +277,7 @@ const display = (() => {
 
   const deleteProject = () => {
     deleteList.addEventListener('click', () => {
-      lists = lists.filter(list => list.id !== selectProject)
+      lists = lists.filter(list => list.id !== selectProject);
       selectProject = null;
       tasks.style.display = 'none';
       showSave();
