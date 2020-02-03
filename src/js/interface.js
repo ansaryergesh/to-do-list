@@ -3,10 +3,8 @@ import { project } from './project';
 import { todolist } from './todo';
 
 const display = (() => {
-  const storage_project = 'task.lists';
-  const project_select = 'task.selected';
-  let lists = JSON.parse(localStorage.getItem(storage_project)) || [];
-  let selectProject = localStorage.getItem(project_select);
+  let lists = JSON.parse(localStorage.getItem('projects')) || [];
+  let selectProject;
   const sidebar = document.createElement('aside');
   sidebar.classList.add('left', 'col', 'm3','s12');
   const head = document.createElement('h2');
@@ -44,7 +42,7 @@ const display = (() => {
         <option value="Medium">Medium</option>
         <option value="High">High</option>
     </select>
-    <input type="submit" class="addBtn smallest" value="Add/Edit">`
+    <input type="submit" id="action" class="addBtn smallest" value="Add/Edit">`
   deleteList.classList.add('deleteList');
   deleteList.innerHTML = "Delete Project";
   projectForm.classList.add('form1');
@@ -75,8 +73,8 @@ const display = (() => {
     document.querySelector('.addBtn').addEventListener('click', (e) => {
       if(projectForm.style.display === 'none') {
         setTimeout(function () {
-            addBtn.innerText = "Cancel";
-            projectForm.style.display = 'inherit';
+          addBtn.innerText = "Cancel";
+          projectForm.style.display = 'inherit';
         }, 200);
       } else { 
           addBtn.innerText = "Add new Project";
@@ -113,8 +111,8 @@ const display = (() => {
       var taskPrior = priorityTask.value;
       if (taskTitle === '' || taskDesc === '' || taskDate === null || taskPrior === '') return
       const todoList = todolist(taskTitle,taskDesc,taskDate,taskPrior);
-      const selectedList = lists.find(list => list.id === selectProject);
-      selectedList.tasks.push(todoList);
+      const selectedProject = lists.find(list => list.id === selectProject);
+      selectedProject.tasks.push(todoList);
       showSave();
       clearTaskForm();
     })
@@ -148,20 +146,21 @@ const display = (() => {
   const show = () => {
     clearElement(projectList);
     renderProject();
-    const selectedList = lists.find(list => list.id === selectProject)
+    const selectedProject = lists.find(list => list.id === selectProject)
     if (selectProject == null){
       tasks.style.display = 'none';
     }
     else {
       tasks.style.display = '';
-      head2.innerText = selectedList.name + " : " + selectedList.tasks.length;
+      head2.innerText = selectedProject.name + " : " + selectedProject.tasks.length;
       clearElement(tableTask);
-      renderTasks(selectedList);
+      renderTasks(selectedProject);
+      clearAction();
       clearTaskForm();
-      if (selectedList.tasks.length === 0) {
+      if (selectedProject.tasks.length === 0) {
         tableContainer.style.display = 'none';
       } else {
-            tableContainer.style.display = '';
+          tableContainer.style.display = '';
       }
     }
   }
@@ -178,17 +177,6 @@ const display = (() => {
       projectList.appendChild(listElement);
     })
   }
-
-
-  const deleteTask = (elem,e) => {
-    if (elem.className === 'btn-delete') {
-      elem.parentElement.parentElement.remove();
-      const selectedList = lists.find(list => list.id === selectProject);
-      const selectedTask = selectedList.tasks.find(task => task.id === e.target.id);
-      console.log(selectedTask);
-    }
-  }
-
   
   const renderTasks = (list) => {
     list.tasks.forEach(task => {
@@ -209,13 +197,11 @@ const display = (() => {
       tableTask.appendChild(taskElement);
     })
 
-   
-
     tableTask.addEventListener('click', e => {
       if (e.target.tagName.toLowerCase()  === 'input') {
         parent = e.target.parentNode.parentNode.parentNode;
-        const selectedList = lists.find(list => list.id === selectProject);
-        const selectedTask = selectedList.tasks.find(task => task.id === parent.dataset.taskList);
+        const selectedProject = lists.find(list => list.id === selectProject);
+        const selectedTask = selectedProject.tasks.find(task => task.id === parent.dataset.taskList);
         selectedTask.done = e.target.checked;
         save();
       }
@@ -223,19 +209,35 @@ const display = (() => {
       if (e.target.className === 'btn-delete') { 
         deleteTodo(e.target); 
         parent = e.target.parentNode.parentNode;
-        const selectedList = lists.find(list => list.id === selectProject);
-        selectedList.tasks = selectedList.tasks.filter(task => task.id !== parent.dataset.taskList)
+        const selectedProject = lists.find(list => list.id === selectProject);
+        selectedProject.tasks = selectedProject.tasks.filter(task => task.id !== parent.dataset.taskList)
         save();
       }
 
       if (e.target.className === 'btn-edit') {
         parent = e.target.parentNode.parentNode;
-        const selectedList = lists.find(list => list.id === selectProject);
-        const tasks = selectedList.tasks.find(task => task.id === parent.dataset.taskList);
+        const selectedProject = lists.find(list => list.id === selectProject);
+        const tasks = selectedProject.tasks.find(task => task.id === parent.dataset.taskList);
         editTodo(tasks.title,tasks.description,tasks.dueDate,tasks.priority);
+        document.getElementById('action').classList.add('actionEdit');
+        document.getElementById('action').dataset.taskAction = tasks.id;
+        const cancelEdit = document.createElement('button');
+        cancelEdit.classList.add('cancelEdit');
+        cancelEdit.innerText = 'Cancel Edit';
+        tableContainer.appendChild(cancelEdit);
+        cancelEdit.display.style = '';
       }
 
+      if (e.target.className = 'cancelEdit') {
+        clearAction();
+        cancelEdit.display.style = 'none';
+      }
     })
+  }
+
+  const clearAction = () => {
+    document.getElementById('action').classList.remove('actionEdit');
+    document.getElementById('action').dataset.taskAction = null;
   }
 
   const deleteTodo = (target) => {
@@ -255,7 +257,7 @@ const display = (() => {
   }
 
   const save = () => {
-    localStorage.setItem(storage_project,JSON.stringify(lists));
+    localStorage.setItem('projects',JSON.stringify(lists));
   }
 
   const clearElement = (element) => {
