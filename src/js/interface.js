@@ -220,14 +220,18 @@ const display = (() => {
     })
 
     tableTask.addEventListener('click', e => {
-      if (e.target.className === 'btn-delete') {  
+      if (e.target.className === 'btn-delete') { 
+        deleteTodo(e.target); 
         parent = e.target.parentNode.parentNode;
-        // console.log(parent.dataset.taskList)
         const selectedList = lists.find(list => list.id === selectProject);
         selectedList.tasks = selectedList.tasks.filter(task => task.id !== parent.dataset.taskList)
         save();
       }
     })
+  }
+
+  const deleteTodo = (target) => {
+    target.parentElement.parentElement.remove();
   }
 
   const showSave = () => {
