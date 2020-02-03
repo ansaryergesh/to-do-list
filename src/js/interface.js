@@ -44,7 +44,7 @@ const display = (() => {
         <option value="Medium">Medium</option>
         <option value="High">High</option>
     </select>
-    <input type="submit" class="addBtn smallest" value="Add task">`
+    <input type="submit" class="addBtn smallest" value="Add/Edit">`
   deleteList.classList.add('deleteList');
   deleteList.innerHTML = "Delete Project";
   projectForm.classList.add('form1');
@@ -209,6 +209,8 @@ const display = (() => {
       tableTask.appendChild(taskElement);
     })
 
+   
+
     tableTask.addEventListener('click', e => {
       if (e.target.tagName.toLowerCase()  === 'input') {
         parent = e.target.parentNode.parentNode.parentNode;
@@ -217,9 +219,7 @@ const display = (() => {
         selectedTask.done = e.target.checked;
         save();
       }
-    })
 
-    tableTask.addEventListener('click', e => {
       if (e.target.className === 'btn-delete') { 
         deleteTodo(e.target); 
         parent = e.target.parentNode.parentNode;
@@ -227,11 +227,26 @@ const display = (() => {
         selectedList.tasks = selectedList.tasks.filter(task => task.id !== parent.dataset.taskList)
         save();
       }
+
+      if (e.target.className === 'btn-edit') {
+        parent = e.target.parentNode.parentNode;
+        const selectedList = lists.find(list => list.id === selectProject);
+        const tasks = selectedList.tasks.find(task => task.id === parent.dataset.taskList);
+        editTodo(tasks.title,tasks.description,tasks.dueDate,tasks.priority);
+      }
+
     })
   }
 
   const deleteTodo = (target) => {
     target.parentElement.parentElement.remove();
+  }
+
+  const editTodo = (title, description, date, priority) => {
+    document.querySelector('[data-title]').value = title;
+    document.querySelector('[data-desc]').value = description;
+    document.querySelector('[data-date]').value = date;
+    document.querySelector('[data-priority]').value = priority;
   }
 
   const showSave = () => {
