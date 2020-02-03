@@ -42,7 +42,8 @@ const display = (() => {
         <option value="Medium">Medium</option>
         <option value="High">High</option>
     </select>
-    <input type="submit" id="action" class="addBtn smallest" value="Add/Edit">`
+    <input type="submit" id="action" class="actionEdit" value="Edit">
+    <input type="submit"  class="addBtn smallest" value="Add">`
   deleteList.classList.add('deleteList');
   deleteList.innerHTML = "Delete Project";
   projectForm.classList.add('form1');
@@ -226,10 +227,15 @@ const display = (() => {
         const tasks = selectedProject.tasks.find(task => task.id === parent.dataset.taskList);
         editTodo(tasks.title,tasks.description,tasks.dueDate,tasks.priority);
         document.getElementById('action').classList.add('actionEdit');
+        document.getElementById('action').classList.remove('smallest');
         document.getElementById('action').dataset.taskAction = tasks.id;
         cancelEdit.classList.remove('none');
       }
 
+      
+      if (e.target.className === 'actionEdit') {
+        console.log('something');
+      }
       // if (e.target.className = 'cancelEdit') {
       //   clearAction();
       // }
@@ -243,8 +249,8 @@ const display = (() => {
   })
 
   const clearAction = () => {
-    
     document.getElementById('action').classList.remove('actionEdit');
+    document.getElementById('action').classList.add('smallest');
     document.getElementById('action').dataset.taskAction = null;
   }
 
