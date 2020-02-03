@@ -58,6 +58,10 @@ const display = (() => {
   tasks.appendChild(deleteList);
   tasks.appendChild(tableContainer);
   tableContainer.appendChild(tableTask);
+  const cancelEdit = document.createElement('button');
+  cancelEdit.classList.add('cancelEdit', 'none');
+  cancelEdit.innerText = 'Cancel Edit';
+  tableContainer.appendChild(cancelEdit);
   sidebar.appendChild(projectForm);
   const side = () => {
     head.innerText =' List of projects: ';
@@ -159,8 +163,10 @@ const display = (() => {
       clearTaskForm();
       if (selectedProject.tasks.length === 0) {
         tableContainer.style.display = 'none';
+        cancelEdit.style.display = 'none';
       } else {
           tableContainer.style.display = '';
+          cancelEdit.style.display = '';
       }
     }
   }
@@ -221,21 +227,23 @@ const display = (() => {
         editTodo(tasks.title,tasks.description,tasks.dueDate,tasks.priority);
         document.getElementById('action').classList.add('actionEdit');
         document.getElementById('action').dataset.taskAction = tasks.id;
-        const cancelEdit = document.createElement('button');
-        cancelEdit.classList.add('cancelEdit');
-        cancelEdit.innerText = 'Cancel Edit';
-        tableContainer.appendChild(cancelEdit);
-        cancelEdit.display.style = '';
+        cancelEdit.classList.remove('none');
       }
 
-      if (e.target.className = 'cancelEdit') {
-        clearAction();
-        cancelEdit.display.style = 'none';
-      }
+      // if (e.target.className = 'cancelEdit') {
+      //   clearAction();
+      // }
     })
   }
 
+  cancelEdit.addEventListener('click', e => {
+    clearAction();
+    clearTaskForm();
+    cancelEdit.classList.add('none');
+  })
+
   const clearAction = () => {
+    
     document.getElementById('action').classList.remove('actionEdit');
     document.getElementById('action').dataset.taskAction = null;
   }
