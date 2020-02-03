@@ -12,6 +12,7 @@ const display = (() => {
   const template = document.querySelector('.tasks');
   const tableTask = document.createElement('div');
   const tableContainer = document.createElement('div');
+  const editBtn = document.getElementById('action');
   tableContainer.classList.add('tskContainer')
   const taskContainer = document.querySelector('data-todo-body');
   tableContainer.innerHTML = `
@@ -42,7 +43,7 @@ const display = (() => {
         <option value="Medium">Medium</option>
         <option value="High">High</option>
     </select>
-    <input type="submit" id="action" class="actionEdit" value="Edit">
+    <input type="submit" id="action" class=" addBtn actionEdit none" value="Edit">
     <input type="submit"  class="addBtn smallest" value="Add">`
   deleteList.classList.add('deleteList');
   deleteList.innerHTML = "Delete Project";
@@ -105,15 +106,15 @@ const display = (() => {
 
   const addTasks = () => {
     document.querySelector('.smallest').addEventListener('click', e => {
-      var titleTask = document.querySelector('[data-title]');
-      var descTask = document.querySelector('[data-desc]')
-      var dateTask = document.querySelector('[data-date]');
-      var priorityTask = document.querySelector('[data-priority]');
+      let titleTask = document.querySelector('[data-title]');
+      let descTask = document.querySelector('[data-desc]')
+      let dateTask = document.querySelector('[data-date]');
+      let priorityTask = document.querySelector('[data-priority]');
       e.preventDefault();
-      var taskTitle = titleTask.value;
-      var taskDesc = descTask.value;
-      var taskDate = dateTask.value;
-      var taskPrior = priorityTask.value;
+      let taskTitle = titleTask.value;
+      let taskDesc = descTask.value;
+      let taskDate = dateTask.value;
+      let taskPrior = priorityTask.value;
       if (taskTitle === '' || taskDesc === '' || taskDate === null || taskPrior === '') return
       const todoList = todolist(taskTitle,taskDesc,taskDate,taskPrior);
       const selectedProject = lists.find(list => list.id === selectProject);
@@ -122,6 +123,32 @@ const display = (() => {
       clearTaskForm();
     })
   }
+
+  const editTasks = () => {
+    document.getElementById('action').addEventListener('click', e => {
+      const btn = document.getElementById('action');
+      const taskId = btn.dataset.taskAction;
+      const selectedProject = lists.find(list => list.id === selectProject);
+      const tasks = selectedProject.tasks.find(task => task.id === taskId);
+      // console.log(taskId);
+      let titleTask = document.querySelector('[data-title]');
+      let descTask = document.querySelector('[data-desc]')
+      let dateTask = document.querySelector('[data-date]');
+      let priorityTask = document.querySelector('[data-priority]');
+      e.preventDefault();
+      if (titleTask.value === '' || descTask.value === '' || dateTask.value === null || priorityTask.value === '') return
+      tasks.title = titleTask.value;
+      tasks.description = descTask.value;
+      tasks.dateTask = descTask.value;
+      tasks.priorityTask = priorityTask.value;
+      showSave();
+      clearTaskForm();
+      clearAction();
+      
+    })
+  }
+
+   
 
   const clearTaskForm = () => {
     document.querySelector('[data-title]').value = '';
@@ -226,19 +253,11 @@ const display = (() => {
         const selectedProject = lists.find(list => list.id === selectProject);
         const tasks = selectedProject.tasks.find(task => task.id === parent.dataset.taskList);
         editTodo(tasks.title,tasks.description,tasks.dueDate,tasks.priority);
-        document.getElementById('action').classList.add('actionEdit');
-        document.getElementById('action').classList.remove('smallest');
         document.getElementById('action').dataset.taskAction = tasks.id;
         cancelEdit.classList.remove('none');
+        document.getElementById('action').classList.remove('none');
+        document.querySelector('.smallest').classList.add('none');
       }
-
-      
-      if (e.target.className === 'actionEdit') {
-        console.log('something');
-      }
-      // if (e.target.className = 'cancelEdit') {
-      //   clearAction();
-      // }
     })
   }
 
@@ -249,9 +268,9 @@ const display = (() => {
   })
 
   const clearAction = () => {
-    document.getElementById('action').classList.remove('actionEdit');
-    document.getElementById('action').classList.add('smallest');
     document.getElementById('action').dataset.taskAction = null;
+    document.getElementById('action').classList.add('none');
+    document.querySelector('.smallest').classList.remove('none');
   }
 
   const deleteTodo = (target) => {
@@ -288,6 +307,7 @@ const display = (() => {
     select();
     deleteProject();
     addTasks();
+    editTasks();
   };
 
   return { render };
