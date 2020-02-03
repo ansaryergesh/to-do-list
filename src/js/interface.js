@@ -1,6 +1,6 @@
-import { controller } from './controller';
 import { project } from './project';
 import { todolist } from './todo';
+import { helpers } from './helpers';
 
 const display = (() => {
   let lists = JSON.parse(localStorage.getItem('projects')) || [];
@@ -86,7 +86,6 @@ const display = (() => {
           addBtn.innerText = "Add new Project";
           projectForm.style.display = 'none';
       }
-
     })
   };
 
@@ -172,7 +171,7 @@ const display = (() => {
   }
 
   const show = () => {
-    clearElement(projectList);
+    helpers.clearElement(projectList);
     renderProject();
     const selectedProject = lists.find(list => list.id === selectProject)
     if (selectProject == null){
@@ -181,7 +180,7 @@ const display = (() => {
     else {
       tasks.style.display = '';
       head2.innerText = selectedProject.name + " : " + selectedProject.tasks.length;
-      clearElement(tableTask);
+      helpers.clearElement(tableTask);
       renderTasks(selectedProject);
       clearEvents();
       if (selectedProject.tasks.length === 0) {
@@ -236,7 +235,7 @@ const display = (() => {
       }
 
       if (e.target.className === 'btn-delete') { 
-        deleteTodo(e.target); 
+        helpers.deleteTodo(e.target); 
         parent = e.target.parentNode.parentNode;
         const selectedProject = lists.find(list => list.id === selectProject);
         selectedProject.tasks = selectedProject.tasks.filter(task => task.id !== parent.dataset.taskList)
@@ -274,10 +273,6 @@ const display = (() => {
     clearTaskForm();
   }
 
-  const deleteTodo = (target) => {
-    target.parentElement.parentElement.remove();
-  }
-
   const editTodo = (title, description, date, priority) => {
     document.querySelector('[data-title]').value = title;
     document.querySelector('[data-desc]').value = description;
@@ -292,12 +287,6 @@ const display = (() => {
 
   const save = () => {
     localStorage.setItem('projects',JSON.stringify(lists));
-  }
-
-  const clearElement = (element) => {
-    while(element.firstChild) {
-      element.removeChild(element.firstChild);
-    }
   }
 
   const render = () => {
