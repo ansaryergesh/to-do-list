@@ -89,7 +89,7 @@ const display = (() => {
   const renderProject = () => {
     lists.forEach(list => {
       const listElement = document.createElement('li');
-      listElement.dataset.projectList = list.id
+      listElement.dataset.projectList = list.id;
       listElement.classList.add('list-name');
       listElement.innerText = list.name;
       if (list.id === selectProject) {
@@ -103,7 +103,6 @@ const display = (() => {
     localStorage.setItem('projects', JSON.stringify(lists));
   };
 
-  
   const editTodo = (title, description, date, priority) => {
     document.querySelector('[data-title]').value = title;
     document.querySelector('[data-desc]').value = description;
@@ -134,8 +133,8 @@ const display = (() => {
       if (e.target.tagName.toLowerCase() === 'input') {
         const parent = e.target.parentNode.parentNode.parentNode;
         const selectedProject = lists.find(list => list.id === selectProject);
-        const selectedTask = selectedProject.tasks.find
-        (task => task.id === parent.dataset.taskList);
+        const selectedTask = selectedProject.tasks.find(task => 
+          task.id === parent.dataset.taskList);
         selectedTask.done = e.target.checked;
         save();
       }
@@ -144,8 +143,8 @@ const display = (() => {
         helpers.deleteTodo(e.target);
         const parent = e.target.parentNode.parentNode;
         const selectedProject = lists.find(list => list.id === selectProject);
-        selectedProject.tasks = selectedProject.tasks.filter
-        (task => task.id !== parent.dataset.taskList)
+        selectedProject.tasks = selectedProject.tasks.filter(task => 
+          task.id !== parent.dataset.taskList);
         save();
       }
 
@@ -159,31 +158,51 @@ const display = (() => {
         cancelEdit.classList.remove('none');
         btn.classList.remove('none');
         document.querySelector('.smallest').classList.add('none');
-      };
+      }
     });
+  };
+
+    
+  const clearTaskForm = () => {
+    document.querySelector('[data-title]').value = '';
+    document.querySelector('[data-desc]').value = '';
+    document.querySelector('[data-date]').value = '';
+    document.querySelector('[data-priority]').value = '';
+  };
+
+  const clearAction = () => {
+    const btn = document.getElementById('action');
+    btn.dataset.taskAction = null;
+    btn.classList.add('none');
+    document.querySelector('.smallest').classList.remove('none');
+    cancelEdit.classList.add('none');
+  };
+  
+  const clearEvents = () => {
+    clearAction();
+    clearTaskForm();
   };
 
 
   const show = () => {
     helpers.clearElement(projectList);
     renderProject();
-    const selectedProject = lists.find(list => list.id === selectProject)
-    if (selectProject == null){
+    const selectedProject = lists.find(list => list.id === selectProject);
+    if (selectProject == null) {
       tasks.style.display = 'none';
-    }
-    else {
-      tasks.style.display = '';
-      head2.innerText = selectedProject.name + " : " + selectedProject.tasks.length;
-      helpers.clearElement(tableTask);
-      renderTasks(selectedProject);
-      clearEvents();
-      if (selectedProject.tasks.length === 0) {
-        tableContainer.style.display = 'none';
-        cancelEdit.style.display = 'none';
-      } else {
-          tableContainer.style.display = '';
-          cancelEdit.style.display = '';
-      }
+    } else {
+        tasks.style.display = '';
+        head2.innerText = selectedProject.name + " : " + selectedProject.tasks.length;
+        helpers.clearElement(tableTask);
+        renderTasks(selectedProject);
+        clearEvents();
+        if (selectedProject.tasks.length === 0) {
+          tableContainer.style.display = 'none';
+          cancelEdit.style.display = 'none';
+        } else {
+        tableContainer.style.display = '';
+        cancelEdit.style.display = '';
+        }
     }
   };
 
@@ -209,15 +228,15 @@ const display = (() => {
 
   const addTasks = () => {
     document.querySelector('.smallest').addEventListener('click', e => {
-      let titleTask = document.querySelector('[data-title]');
-      let descTask = document.querySelector('[data-desc]')
-      let dateTask = document.querySelector('[data-date]');
-      let priorityTask = document.querySelector('[data-priority]');
+      const titleTask = document.querySelector('[data-title]');
+      const descTask = document.querySelector('[data-desc]')
+      const dateTask = document.querySelector('[data-date]');
+      const priorityTask = document.querySelector('[data-priority]');
       e.preventDefault();
-      let taskTitle = titleTask.value;
-      let taskDesc = descTask.value;
-      let taskDate = dateTask.value;
-      let taskPrior = priorityTask.value;
+      const taskTitle = titleTask.value;
+      const taskDesc = descTask.value;
+      const taskDate = dateTask.value;
+      const taskPrior = priorityTask.value;
       if (taskTitle === '' || taskDesc === '' || taskDate === null || taskPrior === '') return
       const todoList = todolist(taskTitle,taskDesc,taskDate,taskPrior);
       const selectedProject = lists.find(list => list.id === selectProject);
@@ -233,10 +252,10 @@ const display = (() => {
       const taskId = btn.dataset.taskAction;
       const selectedProject = lists.find(list => list.id === selectProject);
       const tasks = selectedProject.tasks.find(task => task.id === taskId);
-      let titleTask = document.querySelector('[data-title]');
-      let descTask = document.querySelector('[data-desc]')
-      let dateTask = document.querySelector('[data-date]');
-      let priorityTask = document.querySelector('[data-priority]');
+      const titleTask = document.querySelector('[data-title]');
+      const descTask = document.querySelector('[data-desc]')
+      const dateTask = document.querySelector('[data-date]');
+      const priorityTask = document.querySelector('[data-priority]');
       e.preventDefault();
       if (titleTask.value === '' || descTask.value === '' || dateTask.value === '' || priorityTask.value === '') return
       tasks.title = titleTask.value;
@@ -246,13 +265,6 @@ const display = (() => {
       showSave();
       clearEvents();
     });
-  };
-
-  const clearTaskForm = () => {
-    document.querySelector('[data-title]').value = '';
-    document.querySelector('[data-desc]').value = ''
-    document.querySelector('[data-date]').value = ''
-    document.querySelector('[data-priority]').value = ''
   };
 
   const select = () => {
@@ -265,30 +277,17 @@ const display = (() => {
   };
 
   const deleteProject = () => {
-    deleteList.addEventListener('click', e => {
+    deleteList.addEventListener('click', () => {
       lists = lists.filter(list => list.id !== selectProject)
       selectProject = null;
       tasks.style.display = 'none';
       showSave();
     });
   };
-  
-  cancelEdit.addEventListener('click', e => {
+
+  cancelEdit.addEventListener('click', () => {
     clearEvents();
   });
-
-  const clearAction = () => {
-    const btn = document.getElementById('action');
-    btn.dataset.taskAction = null;
-    btn.classList.add('none');
-    document.querySelector('.smallest').classList.remove('none');
-    cancelEdit.classList.add('none');
-  };
-
-  const clearEvents = () => {
-    clearAction();
-    clearTaskForm();
-  };
 
   const render = () => {
     side();
