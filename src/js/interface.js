@@ -191,7 +191,7 @@ const display = (() => {
       tasks.style.display = 'none';
     } else {
       tasks.style.display = '';
-      head2.innerText = selectedProject.name + " : " + selectedProject.tasks.length;
+      head2.innerText = `${selectedProject.name}   :  ${selectedProject.tasks.length}`;
       helpers.clearElement(tableTask);
       renderTasks(selectedProject);
       clearEvents();
@@ -199,8 +199,8 @@ const display = (() => {
         tableContainer.style.display = 'none';
         cancelEdit.style.display = 'none';
       } else {
-      tableContainer.style.display = '';
-      cancelEdit.style.display = '';
+        tableContainer.style.display = '';
+        cancelEdit.style.display = '';
       }
     }
   };
