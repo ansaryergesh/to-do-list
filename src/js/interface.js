@@ -179,11 +179,23 @@ const display = (() => {
     })
   }
 
+
+  const deleteTask = (elem,e) => {
+    if (elem.className === 'btn-delete') {
+      elem.parentElement.parentElement.remove();
+      const selectedList = lists.find(list => list.id === selectProject);
+      const selectedTask = selectedList.tasks.find(task => task.id === e.target.id);
+      console.log(selectedTask);
+    }
+  }
+
+  
   const renderTasks = (list) => {
     list.tasks.forEach(task => {
       const taskElement = document.importNode(template.content, true);
       const checkBox = taskElement.querySelector('input');
-      checkBox.id = task.id;
+      const taskBody = taskElement.querySelector('.task-body');
+      taskBody.dataset.taskList= task.id;
       checkBox.checked = task.done;
       const span = taskElement.querySelector('.name-title');
       const due = taskElement.querySelector('.date');
@@ -199,9 +211,20 @@ const display = (() => {
 
     tableTask.addEventListener('click', e => {
       if (e.target.tagName.toLowerCase()  === 'input') {
+        parent = e.target.parentNode.parentNode.parentNode;
         const selectedList = lists.find(list => list.id === selectProject);
-        const selectedTask = selectedList.tasks.find(task => task.id === e.target.id);
+        const selectedTask = selectedList.tasks.find(task => task.id === parent.dataset.taskList);
         selectedTask.done = e.target.checked;
+        save();
+      }
+    })
+
+    tableTask.addEventListener('click', e => {
+      if (e.target.className === 'btn-delete') {  
+        parent = e.target.parentNode.parentNode;
+        // console.log(parent.dataset.taskList)
+        const selectedList = lists.find(list => list.id === selectProject);
+        selectedList.tasks = selectedList.tasks.filter(task => task.id !== parent.dataset.taskList)
         save();
       }
     })
