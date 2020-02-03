@@ -12,9 +12,7 @@ const display = (() => {
   const template = document.querySelector('.tasks');
   const tableTask = document.createElement('div');
   const tableContainer = document.createElement('div');
-  // const editBtn = document.getElementById('action');
   tableContainer.classList.add('tskContainer');
-  // const taskContainer = document.querySelector('data-todo-body');
   tableContainer.innerHTML = `
     <ul class="headerList"><li>Title</li>
     <li>Due date</li>
@@ -49,7 +47,6 @@ const display = (() => {
   deleteList.innerHTML = 'Delete Project';
   projectForm.classList.add('form1');
   projectForm.style.display = 'none';
-  // todos.style.display === 'flex';
   row.appendChild(sidebar);
   sidebar.appendChild(head);
   sidebar.appendChild(projectList);
@@ -110,15 +107,15 @@ const display = (() => {
           cancelEdit.style.display = '';
       }
     }
-  }
+  };
 
   const save = () => {
     localStorage.setItem('projects',JSON.stringify(lists));
-  }
+  };
 
   const showSave = () => {
     show();
-    save()
+    save();
   };
 
   const addProject = () => {
@@ -133,8 +130,8 @@ const display = (() => {
       pr.value = null;
       lists.push(list);
       showSave();
-    })
-  }
+    });
+  };
 
   const addTasks = () => {
     document.querySelector('.smallest').addEventListener('click', e => {
@@ -153,8 +150,8 @@ const display = (() => {
       selectedProject.tasks.push(todoList);
       showSave();
       clearTaskForm();
-    })
-  }
+    });
+  };
 
   const editTasks = () => {
     document.getElementById('action').addEventListener('click', e => {
@@ -174,15 +171,15 @@ const display = (() => {
       tasks.priority = priorityTask.value;
       showSave();
       clearEvents();
-    })
-  }
+    });
+  };
 
   const clearTaskForm = () => {
     document.querySelector('[data-title]').value = '';
     document.querySelector('[data-desc]').value = ''
     document.querySelector('[data-date]').value = ''
     document.querySelector('[data-priority]').value = ''
-  }
+  };
 
   const select = () => {
     projectList.addEventListener('click', e => {
@@ -191,7 +188,7 @@ const display = (() => {
         showSave();
       }
     });
-  }
+  };
 
   const deleteProject = () => {
     deleteList.addEventListener('click', e => {
@@ -199,8 +196,8 @@ const display = (() => {
       selectProject = null;
       tasks.style.display = 'none';
       showSave();
-    })
-  }
+    });
+  };
 
   const renderProject = () => {
     lists.forEach(list => {
@@ -212,8 +209,8 @@ const display = (() => {
         listElement.classList.add('active');
       }
       projectList.appendChild(listElement);
-    })
-  }
+    });
+  };
   
   const renderTasks = (list) => {
     list.tasks.forEach(task => {
@@ -232,7 +229,7 @@ const display = (() => {
       due.append(task.dueDate);
       prior.append(task.priority);
       tableTask.appendChild(taskElement);
-    })
+    });
 
     tableTask.addEventListener('click', e => {
       if (e.target.tagName.toLowerCase()  === 'input') {
@@ -241,7 +238,7 @@ const display = (() => {
         const selectedTask = selectedProject.tasks.find(task => task.id === parent.dataset.taskList);
         selectedTask.done = e.target.checked;
         save();
-      }
+      };
 
       if (e.target.className === 'btn-delete') { 
         helpers.deleteTodo(e.target); 
@@ -249,7 +246,7 @@ const display = (() => {
         const selectedProject = lists.find(list => list.id === selectProject);
         selectedProject.tasks = selectedProject.tasks.filter(task => task.id !== parent.dataset.taskList)
         save();
-      }
+      };
 
       if (e.target.className === 'btn-edit') {
         parent = e.target.parentNode.parentNode;
@@ -261,13 +258,13 @@ const display = (() => {
         cancelEdit.classList.remove('none');
         btn.classList.remove('none');
         document.querySelector('.smallest').classList.add('none');
-      }
-    })
-  }
+      };
+    });
+  };
 
   cancelEdit.addEventListener('click', e => {
     clearEvents();
-  })
+  });
 
   const clearAction = () => {
     const btn = document.getElementById('action');
@@ -275,19 +272,19 @@ const display = (() => {
     btn.classList.add('none');
     document.querySelector('.smallest').classList.remove('none');
     cancelEdit.classList.add('none');
-  }
+  };
 
   const clearEvents = () => {
     clearAction();
     clearTaskForm();
-  }
+  };
 
   const editTodo = (title, description, date, priority) => {
     document.querySelector('[data-title]').value = title;
     document.querySelector('[data-desc]').value = description;
     document.querySelector('[data-date]').value = date;
     document.querySelector('[data-priority]').value = priority;
-  }
+  };
 
   const render = () => {
     side();

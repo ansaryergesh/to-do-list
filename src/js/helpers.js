@@ -1,6 +1,6 @@
 const helpers = (() => {
   const clearElement = (element) => {
-    while   (element.firstChild) {
+    while (element.firstChild) {
       element.removeChild(element.firstChild);
     }
   };
@@ -8,7 +8,7 @@ const helpers = (() => {
   const deleteTodo = (target) => {
     target.parentElement.parentElement.remove();
   };
-  
+
   return { clearElement, deleteTodo };
 })();
 
