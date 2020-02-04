@@ -265,7 +265,7 @@ const display = (() => {
 
   const select = () => {
     projectList.addEventListener('click', e => {
-      if (e.target.tagName.toLowerCase() === 'li') {
+      if (e.target.tagName === 'li') {
         selectProject = e.target.dataset.projectList;
         showSave();
       }
