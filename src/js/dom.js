@@ -1,5 +1,4 @@
 const dom = (() => {
-
   const renderHTML = () => {
     const sidebar = document.createElement('aside');
     sidebar.classList.add('left', 'col', 'm3', 's12');
@@ -66,10 +65,9 @@ const dom = (() => {
     <br><br>
     <input type="submit" class="addBtn small" value="Add project">
     `;
-  }
+  };
 
-
-  return { renderHTML, }
+  return { renderHTML, };
 })();
 
 
