@@ -66,8 +66,8 @@ const dom = (() => {
     `;
   };
 
-  return { renderHTML, };
+  return { renderHTML };
 })();
 
 
-export { dom }
+export { dom };
