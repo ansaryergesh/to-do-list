@@ -3,8 +3,6 @@ import { todolist } from './todo';
 import { helpers } from './helpers';
 
 const display = (() => {
-  let lists = JSON.parse(localStorage.getItem('projects')) || [];
-  let selectProject;
   const sidebar = document.createElement('aside');
   sidebar.classList.add('left', 'col', 'm3', 's12');
   const head = document.createElement('h2');
@@ -31,6 +29,8 @@ const display = (() => {
   const projectForm = document.createElement('form');
   const deleteList = document.createElement('button');
   const todos = document.createElement('form');
+  let lists = JSON.parse(localStorage.getItem('projects')) || [];
+  let selectProject;
   todos.classList.add('todos');
   todos.innerHTML = `<input type="text" class="titleName" placeholder="title" data-title>
     <input type="text" class="description" placeholder="description" data-desc>
@@ -112,21 +112,18 @@ const display = (() => {
 
   const renderTasks = (list) => {
     list.tasks.forEach(task => {
-      const taskElement = document.importNode(template.content, true);
-      const checkBox = taskElement.querySelector('input');
-      const taskBody = taskElement.querySelector('.task-body');
+      const templateTask = document.importNode(template.content, true);
+      const checkBox = templateTask.querySelector('input');
+      const taskBody = templateTask.querySelector('.task-body');
       taskBody.dataset.taskList = task.id;
       checkBox.checked = task.done;
-      const span = taskElement.querySelector('.name-title');
-      const due = taskElement.querySelector('.date');
-      const prior = taskElement.querySelector('.priorityTd');
-      span.htmlFor = task.id;
-      due.htmlFor = task.id;
-      prior.htmlFor = task.id;
+      const span = templateTask.querySelector('.name-title');
+      const due = templateTask.querySelector('.date');
+      const prior = templateTask.querySelector('.priorityTd');
       span.append(task.title);
       due.append(task.dueDate);
       prior.append(task.priority);
-      tableTask.appendChild(taskElement);
+      tableTask.appendChild(templateTask);
     });
 
     tableTask.addEventListener('click', e => {
@@ -184,7 +181,7 @@ const display = (() => {
 
 
   const show = () => {
-    helpers.clearElement(projectList);
+    helpers.refresh(projectList);
     renderProject();
     const selectedProject = lists.find(list => list.id === selectProject);
     if (selectProject == null) {
@@ -192,7 +189,7 @@ const display = (() => {
     } else {
       tasks.style.display = '';
       head2.innerText = `${selectedProject.name}   :  ${selectedProject.tasks.length}`;
-      helpers.clearElement(tableTask);
+      helpers.refresh(tableTask);
       renderTasks(selectedProject);
       clearEvents();
       if (selectedProject.tasks.length === 0) {
