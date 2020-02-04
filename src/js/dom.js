@@ -26,7 +26,6 @@ const dom = (() => {
     const projectForm = document.createElement('form');
     const deleteList = document.createElement('button');
     const todos = document.createElement('form');
-  
     todos.classList.add('todos');
     todos.innerHTML = `<input type="text" class="titleName" placeholder="title" data-title>
       <input type="text" class="description" placeholder="description" data-desc>

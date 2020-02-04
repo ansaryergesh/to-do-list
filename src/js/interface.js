@@ -5,7 +5,6 @@ import { dom } from './dom';
 
 const display = (() => {
   dom.renderHTML();
-  const head = document.querySelector('.head');
   const head2 = document.querySelector('.head2');
   const projectList = document.querySelector('.mainList');
   const tableContainer = document.querySelector('.tskContainer');
@@ -14,12 +13,11 @@ const display = (() => {
   const tasks = document.querySelector('.tasks');
   const projectForm = document.querySelector('.form1');
   const deleteList = document.querySelector('.deleteList');
-  const todos = document.querySelector('.todos');
   const cancelEdit = document.querySelector('.cancelEdit');
   const template = document.querySelector('template');
   let lists = JSON.parse(localStorage.getItem('projects')) || [];
   let selectProject;
-  
+
   const addButton = () => {
     document.querySelector('.addBtn').addEventListener('click', () => {
       if (projectForm.style.display === 'none') {
