@@ -1,3 +1,139 @@
+$primary-color: rgba(0, 116, 217, 0.842);
 body {
-  background-color: grey;
+    background: url(https://a-static.besthdwallpaper.com/zapusk-office-desk-oboi-1680x1050-16911_5.jpg) no-repeat center top fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  
+    font-size: 18px;
+}
+
+a, button {
+    cursor: pointer;
+}
+
+nav {
+    background-color: $primary-color;
+    z-index: 999;
+}
+
+aside {
+    background-color: rgba(17, 102, 55, 0.815);
+    height: 100vh;
+    min-height: 100vh;
+    padding: 15px;
+    border-radius: 40px;
+    box-shadow: 0rem 0.5rem 5rem rgba(0, 0, 0, 0.9); 
+    margin-right: 25px;
+}
+
+.head {
+    color: darken($primary-color, 40%)
+}
+.head2 {
+    color: lighten($primary-color, 30%);
+    font-size: 40px;
+}
+
+.addBtn {
+    padding: 10px;
+    border: none;
+    border-radius: 25px;
+    background-color: lighten($primary-color, 30%);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.63); 
+    cursor: pointer;
+    &:hover {
+        background-color: $primary-color;
+    }
+}
+
+form {
+    margin-top: 25px;
+}
+.small {
+    font-size: 14px;
+    border-radius: 15px;
+    background-color: lighten($primary-color, 10%);
+}
+.smallest {
+    border-radius: 8px;
+    padding: 3px;
+    font-size: 10px;
+    background-color: lighten($primary-color, 10%);
+}
+
+.tasks {
+    background-color: rgba(27, 18, 18, 0.973);
+    height: 100vh;
+    margin-top: 10px;
+    border-radius: 40px;    
+}
+
+.none {
+    display: none;
+}
+
+.taskBtn {
+    position: fixed;
+    bottom:0;
+    margin-bottom: 15px;
+}
+
+.mainList {
+    color:white;
+    li {
+        background-color: rgba(0, 0, 0, 0.267);
+        padding: 5px;
+        cursor: pointer;
+        margin-bottom: 2px;
+    }
+}
+  
+
+.active {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.deleteList {
+    font-size:15px;
+    padding: 5px;
+    background-color: lighten($primary-color, 40%);
+    border:none;
+
+    &:hover {
+        background-color: lighten($primary-color, 35%);
+    }
+}
+
+.todos {
+    display: flex;
+    input {
+        color:white;
+    }
+    
+}
+
+.task-body{
+    display: flex;
+    flex-wrap: nowrap;
+    li {
+        margin: 0 25px;
+        text-align: center;
+        width: 100%;
+    }
+}
+.headerList{
+    display: flex;
+    flex-wrap: nowrap;
+    li {
+        margin: 0 25px;
+        text-align: center;
+        width: 100%;
+    }
+}
+.tskContainer {
+    color:white;
+    margin-top: 35px;
 }
