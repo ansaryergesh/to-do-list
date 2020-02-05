@@ -82,7 +82,7 @@ const dom = (() => {
         dueDate: '2025-05-05',
         priority: 'High',
         done: false,
-      }]
+      }],
     }];
     if (localStorage.getItem('projects') === null) {
       localStorage.setItem('projects', JSON.stringify(testing));
