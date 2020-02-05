@@ -67,7 +67,7 @@ const dom = (() => {
     const testing = [{
       id: '1',
       name: 'default',
-      tasks : [{
+      tasks: [{
         id: '1',
         title: 'default',
         description: 'description',
@@ -82,7 +82,7 @@ const dom = (() => {
         dueDate: '2025-05-05',
         priority: 'High',
         done: false,
-      }]  
+      }]
     }];
     if (localStorage.getItem('projects') === null) {
       localStorage.setItem('projects', JSON.stringify(testing));
